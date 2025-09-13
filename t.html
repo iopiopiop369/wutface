@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia:wght@400&family=Computer+Modern+Serif:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Computer Modern Serif', 'Times New Roman', serif;
+            background-color: #f8f9fa;
+            color: #333;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .container {
+            width: 90vw;
+            max-width: 1000px;
+            height: 85vh;
+            position: relative;
+        }
+        
+        .bookmarks {
+            position: absolute;
+            top: -30px;
+            right: 20px;
+            display: flex;
+            gap: 8px;
+            z-index: 10;
+        }
+        
+        .bookmark {
+            background: #ffffff;
+            border: 2px solid #2c3e50;
+            border-bottom: none;
+            padding: 12px 16px;
+            cursor: pointer;
+            font-size: 20px;
+            border-radius: 8px 8px 0 0;
+            box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            top: 3px;
+        }
+        
+        .bookmark:hover {
+            background: #ecf0f1;
+            transform: translateY(-2px);
+        }
+        
+        .bookmark.active {
+            background: #ffffff;
+            border-bottom: 2px solid #ffffff;
+            top: 0;
+            box-shadow: 0 -4px 8px rgba(0,0,0,0.15);
+        }
+        
+        .main-box {
+            background: #ffffff;
+            border: 2px solid #2c3e50;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            height: 100%;
+            padding: 40px;
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        .section {
+            display: none;
+            height: calc(100% - 20px);
+            animation: fadeIn 0.4s ease-in;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .section-title {
+            font-family: 'UnifrakturMaguntia', serif;
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            text-align: center;
+            color: #2c3e50;
+            border-bottom: 2px solid #bdc3c7;
+            padding-bottom: 15px;
+        }
+        
+        /* Profile Section Styles */
+        .profile-content {
+            display: flex;
+            gap: 40px;
+            height: calc(100% - 80px);
+        }
+        
+        .profile-left {
+            flex: 0 0 280px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .profile-photo {
+            width: 180px;
+            height: 180px;
+            border: 2px solid #2c3e50;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .profile-photo::before {
+            content: '👤';
+            font-size: 70px;
+            position: absolute;
+        }
+        
+        .contact-info {
+            text-align: left;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+            width: 100%;
+        }
+        
+        .contact-info h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            border-bottom: 1px solid #bdc3c7;
+            padding-bottom: 8px;
+            font-weight: bold;
+        }
+        
+        .contact-info p {
+            margin-bottom: 10px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .contact-info strong {
+            color: #2c3e50;
+        }
+        
+        .profile-right {
+            flex: 1;
+            padding-left: 20px;
+        }
+        
+        .profile-right h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            border-bottom: 1px solid #bdc3c7;
+            padding-bottom: 8px;
+            font-weight: bold;
+        }
+        
+        .profile-right p {
+            font-size: 16px;
+            line-height: 1.7;
+            text-align: justify;
+            color: #34495e;
+        }
+        
+        /* Projects and Experiences Section Styles */
+        .projects-content, .experiences-content, .achievements-content {
+            height: calc(100% - 80px);
+            overflow-y: auto;
+        }
+        
+        .entry {
+            margin-bottom: 20px;
+            padding: 20px;
+            border: 1px solid #ecf0f1;
+            background: #fdfdfd;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .entry:hover {
+            border-color: #3498db;
+            box-shadow: 0 2px 8px rgba(52, 152, 219, 0.1);
+        }
+        
+        .entry h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #2c3e50;
+            font-weight: bold;
+        }
+        
+        .entry p {
+            font-size: 14px;
+            color: #7f8c8d;
+            line-height: 1.6;
+        }
+        
+        .maths-essays.expanded {
+            background: #f8f9fa;
+            border-color: #3498db;
+        }
+        
+        .maths-essays.expanded h3::after {
+            content: ' ▼';
+            color: #3498db;
+        }
+        
+        .maths-essays h3::after {
+            content: ' ▶';
+            color: #bdc3c7;
+            transition: all 0.3s ease;
+        }
+        
+        .sub-entries {
+            margin-top: 15px;
+            padding-left: 15px;
+            border-left: 3px solid #3498db;
+            display: none;
+        }
+        
+        .sub-entries.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+        
+        @keyframes slideDown {
+            from { opacity: 0; max-height: 0; }
+            to { opacity: 1; max-height: 150px; }
+        }
+        
+        .sub-entry {
+            padding: 10px 15px;
+            margin-bottom: 8px;
+            background: #ffffff;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .sub-entry:hover {
+            background: #e3f2fd;
+            border-color: #2196f3;
+        }
+        
+        .sub-entry h4 {
+            font-size: 14px;
+            color: #2c3e50;
+            margin: 0;
+        }
+        
+        /* Experience Entry Styles */
+        .experience-entry {
+            margin-bottom: 25px;
+            padding: 20px;
+            border-left: 4px solid #3498db;
+            background: #fdfdfd;
+            border-radius: 0 6px 6px 0;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+        }
+        
+        .experience-entry h3 {
+            font-size: 18px;
+            color: #2c3e50;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+        
+        .experience-meta {
+            font-size: 13px;
+            color: #95a5a6;
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+        
+        .experience-entry p {
+            font-size: 14px;
+            color: #34495e;
+            line-height: 1.6;
+        }
+        
+        /* Empty state for achievements */
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: calc(100% - 80px);
+            text-align: center;
+            color: #7f8c8d;
+        }
+        
+        .empty-state-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+        
+        .empty-state p {
+            font-size: 18px;
+            font-style: italic;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 900px) {
+            .profile-content {
+                flex-direction: column;
+                gap: 25px;
+            }
+            
+            .profile-left {
+                flex: none;
+            }
+            
+            .profile-right {
+                padding-left: 0;
+            }
+            
+            .main-box {
+                padding: 30px;
+            }
+        }
+        
+        @media (max-height: 700px) {
+            .section-title {
+                font-size: 28px;
+                margin-bottom: 20px;
+            }
+            
+            .main-box {
+                padding: 30px;
+            }
+            
+            .profile-photo {
+                width: 150px;
+                height: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="bookmarks">
+            <div class="bookmark active" data-section="profile">👤</div>
+            <div class="bookmark" data-section="projects">💻</div>
+            <div class="bookmark" data-section="experiences">💼</div>
+            <div class="bookmark" data-section="achievements">🏆</div>
+        </div>
+        
+        <div class="main-box">
+            <div class="section active" id="profile">
+                <h1 class="section-title">Profile</h1>
+                <div class="profile-content">
+                    <div class="profile-left">
+                        <div class="profile-photo">
+                            <!-- Profile photo placeholder -->
+                        </div>
+                        <div class="contact-info">
+                            <h3>Contact</h3>
+                            <p><strong>Email:</strong><br>[Your Email]</p>
+                            <p><strong>LinkedIn:</strong><br>[Your LinkedIn Profile URL]</p>
+                            <p><strong>GitHub:</strong><br>[Your GitHub Profile URL]</p>
+                        </div>
+                    </div>
+                    <div class="profile-right">
+                        <h3>Introduction</h3>
+                        <p>[This is where you would include a brief, engaging introductory paragraph about yourself. You can describe your background, interests, professional goals, and what makes you unique. This section should give visitors a clear sense of who you are and what you're passionate about.]</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section" id="projects">
+                <h1 class="section-title">Projects</h1>
+                <div class="projects-content">
+                    <div class="entry maths-essays" onclick="toggleMathsEssays()">
+                        <h3>Maths Essays</h3>
+                        <p>A collection of mathematical explorations covering various topics in pure and applied mathematics.</p>
+                        <div class="sub-entries" id="mathsSubEntries">
+                            <div class="sub-entry" onclick="openLink('https://drive.google.com/file/d/1yUMZlX7dOJ4fqOfNrK_YDfR9ZN9HrCm2/view?usp=drive_link')">
+                                <h4>Bayesian Inference Introduction</h4>
+                            </div>
+                            <div class="sub-entry" onclick="openLink('https://drive.google.com/file/d/1WhCDWV2uYwvzjZi5HLCTr4MlTOZ3aWsJ/view?usp=drive_link')">
+                                <h4>Chi-Squared Statistics</h4>
+                            </div>
+                            <div class="sub-entry">
+                                <h4>Lebesgue Integration: Part I</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="entry">
+                        <h3>ESG Chatbot</h3>
+                        <p>An intelligent conversational AI system designed to provide insights on Environmental, Social, and Governance practices for sustainable business development.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section" id="experiences">
+                <h1 class="section-title">Experiences</h1>
+                <div class="experiences-content">
+                    <div class="experience-entry">
+                        <h3>Summer Internship Programme at RHB Bank</h3>
+                        <div class="experience-meta">RHB Banking Group • Summer 2024</div>
+                        <p>[Add details about your internship experience, responsibilities, achievements, and key learnings from your time at RHB Bank.]</p>
+                    </div>
+                    <div class="experience-entry">
+                        <h3>Research Team at LSESU Actuarial Society</h3>
+                        <div class="experience-meta">London School of Economics • 2023 - Present</div>
+                        <p>[Describe your role in the research team, the projects you've worked on, and the contributions you've made to the actuarial society.]</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section" id="achievements">
+                <h1 class="section-title">Achievements</h1>
+                <div class="achievements-content">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🏆</div>
+                        <p>Achievements section coming soon...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Bookmark navigation
+        document.querySelectorAll('.bookmark').forEach(bookmark => {
+            bookmark.addEventListener('click', function() {
+                // Remove active class from all bookmarks and sections
+                document.querySelectorAll('.bookmark').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+                
+                // Add active class to clicked bookmark
+                this.classList.add('active');
+                
+                // Show corresponding section
+                const sectionId = this.getAttribute('data-section');
+                const targetSection = document.getElementById(sectionId);
+                if (targetSection) {
+                    targetSection.classList.add('active');
+                }
+            });
+        });
+        
+        // Maths Essays toggle functionality
+        function toggleMathsEssays() {
+            const mathsEntry = document.querySelector('.maths-essays');
+            const subEntries = document.getElementById('mathsSubEntries');
+            
+            mathsEntry.classList.toggle('expanded');
+            subEntries.classList.toggle('show');
+        }
+        
+        // Function to open links in new tab
+        function openLink(url) {
+            window.open(url, '_blank');
+        }
+        
+        // Prevent event bubbling on sub-entries
+        document.querySelectorAll('.sub-entry').forEach(entry => {
+            entry.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        });
+        
+        // Smooth scrolling for sections with overflow
+        document.querySelectorAll('.projects-content, .experiences-content, .achievements-content').forEach(content => {
+            content.style.scrollBehavior = 'smooth';
+        });
+    </script>
+</body>
+</html>
